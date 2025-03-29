@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    /* Module Settings */
+    "module": "CommonJS", // Compile to CommonJS (require/module.exports) - Key for resolving the error with ts-node
+    "moduleResolution": "Node", // How modules are found (standard for CommonJS/Node)
+    "esModuleInterop": true, // Allows default imports from CommonJS modules (increases compatibility)
+
+    /* Type Checking */
+    "strict": true, // Enable all strict type-checking options (recommended)
+    "skipLibCheck": true, // Skip type checking of declaration files (*.d.ts) for faster builds
+
+    /* Emit Settings */
+    "target": "ES2020", // Target modern-ish JavaScript features, compatible with most recent Node versions
+    "outDir": "./dist", // Where compiled JavaScript files will be placed (if you run 'tsc')
+    "rootDir": "./", // The root directory of your source files (adjust if 'generateBlob.ts' is in './src')
+
+    /* Other */
+    "forceConsistentCasingInFileNames": true // Disallow inconsistently-cased references to the same file.
+  },
+  "include": [
+    "src/**/*.ts" // Include all TypeScript files in the src directory
+  ],
+  "exclude": [
+    "node_modules", // Always exclude node_modules
+    "dist" // Exclude the output directory
+  ]
+}

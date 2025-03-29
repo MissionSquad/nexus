@@ -22,15 +22,65 @@ This assumes that you are using an AI code assistant that can read and write fil
 
 ### 1. **Project Onboarding**
 
-When onboarding a project to the nexus system, run your AI code assistant with the `nexus-onboarding-prompt.md` file. This will facilitate the creation of the initial Nexus documents based on the project's codebase and structure. Just run it with the prompt and say something like, "let's onboard to the nexus system" and optionally you can tell it the entrypoint for your application like: "let's onboard this project to the nexus system. the entrypoint is `src/index.js`". The assistant should be able to figure out the rest and will ask questions if clarification is needed.
+There are two ways to onboard a project to the Nexus system:
+
+#### Interactive Onboarding
+
+Run your AI code assistant with the `nexus-onboarding-prompt.md` file. This will facilitate the creation of the initial Nexus documents based on the project's codebase and structure through an interactive process. Just run it with the prompt and say something like, "let's onboard to the nexus system" and optionally you can tell it the entrypoint for your application like: "let's onboard this project to the nexus system. the entrypoint is `src/index.js`". The assistant should be able to figure out the rest and will ask questions if clarification is needed.
+
+#### One-Shot Onboarding
+
+For smaller projects that can fit within the context window of your LLM, you can use the `nexus-onboarding-oneshot.md` prompt. This allows you to send the entire codebase to the model in one message, using the codebase combination tools described below. The model will then analyze the entire codebase at once and create all the necessary Nexus documents.
 
 ### 2. **Task Execution**
 
 For executing tasks, use the `nexus-task-prompt.md` file. This prompt guides the AI in creating a session document, which captures the task's context, plan, and progress. The AI will update this document as it works on the task, ensuring that all relevant information is preserved.
 
+### 3. **Codebase Combination Tools**
+
+The Nexus system includes two scripts for combining multiple code files into a single text blob with token counting functionality:
+
+#### `combineFiles.ts`
+
+This script combines specific files that you specify into a single blob.
+
+```bash
+# Basic usage
+yarn combine-files file1.ts file2.ts
+
+# Output to a file instead of terminal
+yarn combine-files file1.ts file2.ts > combined-code.txt
+
+# Count tokens using different tokenizers
+yarn combine-files --tokenizer-type xenova file1.ts file2.ts > combined-code.txt
+yarn combine-files --tokenizer o200k_base file1.ts file2.ts > combined-code.txt
+```
+
+#### `codebaseBlob.ts`
+
+This script scans an entire directory recursively and combines all text files into a single blob, respecting .gitignore files.
+
+```bash
+# Basic usage
+yarn start-ts /path/to/project
+
+# Output to a file instead of terminal
+yarn start-ts /path/to/project > project-code.txt
+
+# Count tokens using different tokenizers
+yarn start-ts --tokenizer-type xenova /path/to/project > project-code.txt
+yarn start-ts --tokenizer-type gemini /path/to/project > project-code.txt
+```
+
+Both scripts will output token counts to stderr while sending the combined code to stdout, making it easy to redirect the output to a file while still seeing the token counts in your terminal.
+
+See `tokenizer-usage-examples.md` for more detailed examples and options.
+
 #### Using with Cline
 
-To use this system with Cline, you can add either of the prompts to your `.clinerules` file and then just prompt the assistant like your normally do. If you're onboarding, use the onboarding prompt first, create the initial set of documents as described above, then replace the onboarding prompt with the task prompt in your `.clinerules` file and you're good to go.
+To use this system with Cline, you can add any of the prompts to your `.clinerules` file and then just prompt the assistant like you normally do. If you're onboarding, use the onboarding prompt first, create the initial set of documents as described above, then replace the onboarding prompt with the task prompt in your `.clinerules` file and you're good to go.
+
+For sending the entire codebase to the model in one message, you can use the codebase combination tools to generate a combined file, and then include that in your prompt to the model.
 
 ## Key Goals
 

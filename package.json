@@ -1,0 +1,28 @@
+{
+  "name": "nexus",
+  "version": "1.0.0",
+  "description": "scripts for combining files and counting their tokens",
+  "main": "codebaseBlob.js",
+  "scripts": {
+    "build": "tsc",
+    "combine-codebase": "ts-node src/codebaseBlob.ts",
+    "combine-files": "ts-node src/combineFiles.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@huggingface/transformers": "^3.4.1",
+    "@lenml/tokenizer-gemini": "^3.4.2",
+    "fast-glob": "3",
+    "gpt-tokenizer": "^2.9.0",
+    "minimatch": "^10.0.1"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/node": "^22.13.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  }
+}
